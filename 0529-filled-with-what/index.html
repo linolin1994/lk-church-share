@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1A2A4A">
+<title>被甚麼充滿？｜小組分享</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<style>
+  :root{
+    --cream:#FAF7F2;
+    --ink:#1A2A4A;
+    --babel:#1A2A4A;
+    --babel-light:#2C3E66;
+    --pentecost:#B8860B;
+    --pentecost-light:#D4A537;
+    --warm:#F5E6C8;
+    --accent:#8B2A2A;
+    --muted:#6B6557;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:var(--cream);}
+  body{
+    font-family:"Noto Sans TC","PingFang TC","Heiti TC","Microsoft JhengHei",sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.7;
+  }
+  .serif{font-family:"Noto Serif TC","Songti TC","PingFang TC",serif;}
+
+  /* 進度條 */
+  .progress-bar{
+    position:fixed;top:0;left:0;height:3px;width:100%;
+    background:rgba(26,42,74,0.08);z-index:100;
+  }
+  .progress-fill{
+    height:100%;background:var(--accent);
+    transition:width .4s ease;width:0%;
+  }
+  /* 頁碼 */
+  .page-num{
+    position:fixed;top:14px;right:16px;z-index:100;
+    font-size:13px;color:var(--muted);
+    background:rgba(250,247,242,0.7);
+    padding:3px 10px;border-radius:999px;
+    backdrop-filter:blur(8px);
+    font-variant-numeric:tabular-nums;
+  }
+  .page-num.dark{color:rgba(255,255,255,0.7);background:rgba(0,0,0,0.25);}
+
+  /* Swiper */
+  .swiper{width:100vw;height:100vh;}
+  .swiper-slide{
+    display:flex;align-items:center;justify-content:center;
+    padding:60px 24px 90px;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .slide-inner{
+    width:100%;max-width:560px;
+    margin:auto;
+  }
+
+  /* 共用 */
+  h1.title{
+    font-size:38px;font-weight:900;line-height:1.3;
+    margin:0 0 18px;letter-spacing:1px;
+  }
+  h2.title{
+    font-size:30px;font-weight:700;line-height:1.4;
+    margin:0 0 16px;
+  }
+  .eyebrow{
+    font-size:13px;letter-spacing:4px;
+    color:var(--accent);font-weight:500;
+    margin-bottom:18px;text-transform:uppercase;
+  }
+  p{font-size:18px;line-height:1.8;margin:0 0 14px;}
+  .lead{font-size:20px;line-height:1.8;}
+  .highlight{
+    background:linear-gradient(transparent 62%,rgba(184,134,11,0.35) 62%);
+    padding:0 2px;font-weight:700;
+  }
+  .divider{
+    height:1px;width:48px;background:var(--accent);
+    margin:18px 0;
+  }
+
+  /* 巴別塔頁面（深色） */
+  .slide-babel{
+    background:linear-gradient(160deg,#0F1A33 0%,#1A2A4A 60%,#2C3E66 100%);
+    color:var(--cream);
+  }
+  .slide-babel .eyebrow{color:#D4A537;}
+  .slide-babel .highlight{background:linear-gradient(transparent 62%,rgba(212,165,55,0.45) 62%);}
+  .slide-babel .divider{background:#D4A537;}
+
+  /* 五旬節頁面（暖色） */
+  .slide-pentecost{
+    background:linear-gradient(160deg,#5C3A0B 0%,#B8860B 55%,#D4A537 100%);
+    color:#FFF8E7;
+  }
+  .slide-pentecost .eyebrow{color:#FFF8E7;}
+  .slide-pentecost .highlight{background:linear-gradient(transparent 62%,rgba(255,255,255,0.35) 62%);color:#FFF;}
+  .slide-pentecost .divider{background:#FFF8E7;}
+
+  /* 標題頁 */
+  .cover{
+    background:radial-gradient(circle at 50% 30%,#2C3E66 0%,#0F1A33 70%);
+    color:var(--cream);text-align:center;
+  }
+  .cover .stamp{
+    display:inline-block;border:1px solid rgba(212,165,55,0.7);
+    padding:6px 18px;border-radius:999px;
+    font-size:13px;letter-spacing:6px;color:#D4A537;
+    margin-bottom:30px;
+  }
+  .cover h1.title{font-size:48px;color:#FFF;}
+  .cover .verse{color:#D4A537;font-size:16px;letter-spacing:2px;margin-top:10px;}
+  .cover .start-hint{
+    margin-top:48px;font-size:14px;color:rgba(255,255,255,0.5);
+    letter-spacing:3px;animation:fadepulse 2s ease-in-out infinite;
+  }
+  @keyframes fadepulse{0%,100%{opacity:.4;}50%{opacity:1;}}
+
+  /* 破冰、討論題卡片 */
+  .ice-card{
+    background:#FFF;border-radius:24px;
+    padding:32px 26px;text-align:center;
+    box-shadow:0 8px 30px rgba(26,42,74,0.08);
+  }
+  .ice-card .label{
+    font-size:13px;letter-spacing:4px;color:var(--accent);
+    margin-bottom:16px;
+  }
+  .ice-card .q{
+    font-size:24px;line-height:1.6;font-weight:700;
+    color:var(--ink);
+  }
+
+  /* 經文 */
+  .scripture-head{
+    text-align:center;margin-bottom:18px;
+  }
+  .scripture-head .ref{
+    font-size:14px;letter-spacing:3px;color:var(--accent);
+  }
+  .scripture-head .title-zh{
+    font-size:26px;font-weight:700;margin-top:6px;
+  }
+  .verse-list{
+    background:#FFF;border-radius:18px;
+    padding:22px 20px;
+    box-shadow:0 6px 24px rgba(26,42,74,0.06);
+  }
+  .verse-list .vrow{
+    display:flex;gap:10px;margin-bottom:14px;
+    align-items:flex-start;
+  }
+  .verse-list .vrow:last-child{margin-bottom:0;}
+  .vnum{
+    flex:0 0 24px;font-size:13px;font-weight:700;
+    color:var(--accent);background:rgba(139,42,42,0.08);
+    border-radius:6px;text-align:center;padding:3px 0;
+    line-height:1.2;margin-top:4px;
+  }
+  .vtext{flex:1;font-size:17px;line-height:1.85;}
+  .read-hint{
+    text-align:center;font-size:13px;color:var(--muted);
+    margin-top:14px;letter-spacing:2px;
+  }
+
+  /* 對照表 */
+  .compare-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:12px;
+    margin-top:14px;
+  }
+  .compare-col{
+    border-radius:16px;padding:18px 14px;color:#FFF;
+    min-height:60px;
+  }
+  .compare-col.babel{background:linear-gradient(160deg,#1A2A4A,#0F1A33);}
+  .compare-col.pent{background:linear-gradient(160deg,#D4A537,#8B6508);}
+  .compare-col .head{
+    font-size:14px;font-weight:700;text-align:center;
+    padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.25);
+    margin-bottom:10px;letter-spacing:2px;
+  }
+  .compare-col .item{
+    font-size:15px;line-height:1.5;margin-bottom:10px;
+    text-align:center;
+  }
+  .compare-col .item:last-child{margin-bottom:0;}
+  .vs{
+    text-align:center;font-size:13px;color:var(--muted);
+    letter-spacing:6px;margin-top:14px;
+  }
+
+  /* 互動題：填空題 */
+  .quiz-card{
+    background:#FFF;border-radius:20px;padding:24px 20px;
+    box-shadow:0 8px 24px rgba(26,42,74,0.08);
+    margin-bottom:16px;
+  }
+  .quiz-q{
+    font-size:17px;line-height:1.7;margin-bottom:14px;font-weight:500;
+  }
+  .quiz-q .blank{
+    display:inline-block;min-width:90px;border-bottom:2px dashed var(--accent);
+    text-align:center;color:var(--accent);font-weight:700;
+    padding:0 6px;
+  }
+  .options{display:flex;flex-direction:column;gap:8px;}
+  .opt{
+    background:var(--cream);border:1.5px solid #E5DFD3;
+    border-radius:12px;padding:12px 14px;
+    font-size:15px;cursor:pointer;
+    transition:all .2s;text-align:left;font-family:inherit;color:var(--ink);
+    line-height:1.5;
+  }
+  .opt:active{transform:scale(0.98);}
+  .opt.correct{background:#E8F5E9;border-color:#4CAF50;color:#1B5E20;font-weight:700;}
+  .opt.wrong{background:#FFEBEE;border-color:#E57373;color:#B71C1C;}
+  .opt.dim{opacity:0.45;}
+  .feedback{
+    margin-top:12px;padding:12px;border-radius:10px;
+    background:#FFF8E7;border-left:3px solid var(--pentecost);
+    font-size:14px;line-height:1.6;display:none;
+  }
+  .feedback.show{display:block;}
+
+  /* 情境配對題 */
+  .scene-card{
+    background:#FFF;border-radius:20px;padding:22px 18px;
+    box-shadow:0 8px 24px rgba(26,42,74,0.08);
+    margin-bottom:14px;
+  }
+  .scene-num{
+    display:inline-block;background:var(--ink);color:#FFF;
+    width:28px;height:28px;border-radius:50%;
+    text-align:center;line-height:28px;font-size:14px;font-weight:700;
+    margin-bottom:10px;
+  }
+  .scene-text{font-size:16px;line-height:1.6;margin-bottom:14px;}
+  .two-choice{display:flex;gap:10px;}
+  .two-choice .opt{flex:1;text-align:center;font-weight:500;}
+  .two-choice .opt.babel-style{border-color:#1A2A4A;color:#1A2A4A;}
+  .two-choice .opt.pent-style{border-color:#B8860B;color:#8B6508;}
+  .two-choice .opt.correct{background:linear-gradient(160deg,#E8F5E9,#C8E6C9);border-color:#2E7D32;color:#1B5E20;}
+  .two-choice .opt.wrong{background:#FFEBEE;border-color:#E57373;color:#B71C1C;}
+
+  /* 討論題列表 */
+  .discussion-list{display:flex;flex-direction:column;gap:14px;}
+  .d-item{
+    background:#FFF;border-radius:16px;padding:20px 18px;
+    border-left:4px solid var(--accent);
+    box-shadow:0 6px 18px rgba(26,42,74,0.06);
+  }
+  .d-num{
+    font-size:13px;letter-spacing:3px;color:var(--accent);
+    font-weight:700;margin-bottom:8px;
+  }
+  .d-text{font-size:18px;line-height:1.7;font-weight:500;}
+
+  /* 結論金句 */
+  .quote-card{
+    text-align:center;padding:40px 20px;
+    background:linear-gradient(160deg,#FFF8E7,#F5E6C8);
+    border-radius:24px;
+    box-shadow:0 12px 32px rgba(139,42,42,0.1);
+  }
+  .quote-mark{
+    font-size:60px;font-family:Georgia,serif;
+    color:var(--accent);line-height:0.5;margin-bottom:8px;
+  }
+  .quote-text{
+    font-size:24px;line-height:1.7;font-weight:700;
+    color:var(--ink);
+  }
+  .quote-text .em{color:var(--accent);}
+
+  /* 行動頁 */
+  .action-box{
+    background:#FFF;border-radius:20px;
+    padding:26px 22px;margin-bottom:16px;
+    border:2px solid var(--pentecost);
+  }
+  .action-box .title{
+    font-size:15px;color:var(--accent);letter-spacing:3px;
+    margin-bottom:10px;font-weight:700;
+  }
+  .action-box .body{font-size:17px;line-height:1.7;}
+  .prayer-box{
+    background:linear-gradient(160deg,#1A2A4A,#0F1A33);
+    color:#FFF8E7;border-radius:20px;
+    padding:26px 22px;
+  }
+  .prayer-box .title{
+    font-size:13px;letter-spacing:4px;color:#D4A537;
+    margin-bottom:12px;
+  }
+  .prayer-box .body{
+    font-size:16px;line-height:1.85;
+  }
+
+  /* 導覽按鈕 */
+  .nav-bar{
+    position:fixed;bottom:0;left:0;right:0;z-index:50;
+    display:flex;gap:8px;padding:12px 16px 18px;
+    background:linear-gradient(to top,rgba(250,247,242,0.95),rgba(250,247,242,0.7) 70%,transparent);
+    backdrop-filter:blur(10px);
+  }
+  .nav-bar.dark{
+    background:linear-gradient(to top,rgba(15,26,51,0.92),rgba(15,26,51,0.6) 70%,transparent);
+  }
+  .nav-btn{
+    flex:1;padding:13px;border-radius:14px;border:none;
+    font-family:inherit;font-size:15px;font-weight:600;
+    background:#FFF;color:var(--ink);
+    box-shadow:0 4px 14px rgba(26,42,74,0.1);
+    cursor:pointer;letter-spacing:2px;
+  }
+  .nav-btn.primary{background:var(--ink);color:#FFF;}
+  .nav-btn:disabled{opacity:0.35;cursor:not-allowed;}
+  .nav-btn:active{transform:translateY(1px);}
+
+  /* 小裝飾 */
+  .deco-pill{
+    display:inline-block;font-size:12px;letter-spacing:3px;
+    padding:4px 12px;border-radius:999px;
+    background:rgba(139,42,42,0.08);color:var(--accent);
+    margin-bottom:14px;
+  }
+  .slide-babel .deco-pill{background:rgba(212,165,55,0.18);color:#D4A537;}
+  .slide-pentecost .deco-pill{background:rgba(255,255,255,0.2);color:#FFF8E7;}
+
+  ul.checklist{padding-left:0;list-style:none;}
+  ul.checklist li{
+    position:relative;padding-left:28px;margin-bottom:10px;
+    font-size:17px;line-height:1.6;
+  }
+  ul.checklist li::before{
+    content:"";position:absolute;left:0;top:9px;
+    width:14px;height:14px;border-radius:50%;
+    background:var(--accent);
+  }
+  .slide-babel ul.checklist li::before{background:#D4A537;}
+  .slide-pentecost ul.checklist li::before{background:#FFF;}
+
+  /* 手機橫向 / 小螢幕微調 */
+  @media (max-height:640px){
+    .swiper-slide{padding:48px 20px 80px;}
+    h1.title{font-size:32px;}
+    h2.title{font-size:26px;}
+    p,.lead{font-size:16px;}
+    .vtext{font-size:16px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="page-num" id="pageNum">1 / 15</div>
+
+<div class="swiper">
+  <div class="swiper-wrapper">
+
+    <!-- 1. 標題頁 -->
+    <div class="swiper-slide cover" data-theme="dark">
+      <div class="slide-inner">
+        <div class="stamp">5 / 29　小組分享</div>
+        <h1 class="serif title">被甚麼<br>充滿？</h1>
+        <div class="verse serif">使徒行傳 2:1-13<br>創世記 11:1-9</div>
+        <div class="start-hint">向右滑動開始 →</div>
+      </div>
+    </div>
+
+    <!-- 2. 破冰 -->
+    <div class="swiper-slide" data-theme="light">
+      <div class="slide-inner">
+        <div class="eyebrow serif">破冰時間</div>
+        <div class="ice-card">
+          <div class="label serif">先聊聊</div>
+          <div class="q serif">
+            打開你的手機看一下<br>
+            <span class="highlight">「螢幕使用時間」</span><br>
+            或行事曆 ——
+          </div>
+          <div style="font-size:19px;font-weight:500;margin-top:20px;line-height:1.7;color:var(--ink);">
+            這禮拜，你發現自己<br>
+            把最多時間
+            <span style="font-size:14px;color:var(--muted);">（或手機容量）</span><br>
+            花在什麼地方？
+          </div>
+        </div>
+        <p style="text-align:center;margin-top:22px;color:var(--muted);font-size:14px;letter-spacing:1px;">
+          答案，可能比我們想的更誠實
+        </p>
+      </div>
+    </div>
+
+    <!-- 3. 前言 -->
+    <div class="swiper-slide" data-theme="light">
+      <div class="slide-inner">
+        <div class="eyebrow serif">前言</div>
+        <h2 class="title serif">人不可能<br>完全空白。</h2>
+        <div class="divider"></div>
+        <p class="lead">
+          人的心若沒有被上帝充滿，<br>
+          就會被<span class="highlight">其他的東西</span>充滿。
+        </p>
+        <p>
+          有人被憂慮充滿、被金錢充滿、被成功充滿、被自己的名字充滿；
+          也有人被苦毒、比較、權力、慾望充滿。
+        </p>
+        <p style="font-weight:700;color:var(--accent);font-size:20px;margin-top:24px;">
+          問題不是「你有沒有被充滿？」<br>
+          問題是 ——<br>
+          <span style="font-size:24px;">「你是被甚麼充滿？」</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- 4. priority 橋樑頁 -->
+    <div class="swiper-slide" data-theme="light">
+      <div class="slide-inner">
+        <div class="eyebrow serif">接續之前</div>
+        <h2 class="title serif">被什麼充滿 =<br>你的 <span style="color:var(--accent);">priority</span></h2>
+        <div class="divider"></div>
+        <p>
+          過去幾週我們一直在談 <b>priority</b> ——<br>
+          人的優先順序。
+        </p>
+        <p>
+          其實「被什麼充滿」<br>
+          跟 priority 是同一件事：
+        </p>
+        <p style="font-size:21px;font-weight:700;color:var(--ink);margin:22px 0;line-height:1.7;">
+          心思<span class="highlight">在哪裡</span>，<br>
+          我們整個人<br>
+          就被帶<span class="highlight">往那裡</span>。
+        </p>
+        <div style="background:#FFF;border-radius:18px;padding:22px 20px;margin:24px 0;border-left:4px solid var(--accent);box-shadow:0 6px 18px rgba(26,42,74,0.06);">
+          <div style="font-size:12px;letter-spacing:3px;color:var(--accent);margin-bottom:10px;font-weight:700;">耶 穌 說</div>
+          <div class="serif" style="font-size:20px;line-height:1.7;font-weight:500;">
+            「你的財寶在哪裡，<br>
+            你的心也在那裡。」
+          </div>
+          <div style="font-size:13px;color:var(--muted);margin-top:12px;text-align:right;letter-spacing:1px;">— 馬太福音 6:21</div>
+        </div>
+        <p>
+          所以當神不在第一位、<br>
+          當我們沒有被聖靈充滿時 ——<br>
+          我們<span class="highlight">從來不是「空的」</span>，<br>
+          而是被別的東西擠滿了。
+        </p>
+        <p style="font-size:16px;color:var(--muted);margin-top:18px;font-style:italic;line-height:1.7;">
+          這聽起來嚴格，但事實就是這樣。<br>
+          因為人，不可能完全空白。
+        </p>
+      </div>
+    </div>
+
+    <!-- 5. 創 11:1-9 經文 -->
+    <div class="swiper-slide" data-theme="light">
+      <div class="slide-inner">
+        <div class="scripture-head">
+          <div class="ref serif">創世記　11：1 - 9</div>
+          <div class="title-zh serif">巴別塔的故事</div>
+        </div>
+        <div class="verse-list">
+          <div class="vrow"><div class="vnum">1</div><div class="vtext">那時，天下人的口音、言語都是一樣。</div></div>
+          <div class="vrow"><div class="vnum">2</div><div class="vtext">他們往東邊遷移的時候，在示拿地遇見一片平原，就住在那裏。</div></div>
+          <div class="vrow"><div class="vnum">3</div><div class="vtext">他們彼此商量說：「來吧！我們要做磚，把磚燒透了。」他們就拿磚當石頭，又拿石漆當灰泥。</div></div>
+          <div class="vrow"><div class="vnum">4</div><div class="vtext">他們說：「來吧！我們要建造一座城和一座塔，塔頂通天，<span class="highlight">為要傳揚我們的名</span>，免得我們分散在全地上。」</div></div>
+          <div class="vrow"><div class="vnum">5</div><div class="vtext">耶和華降臨，要看看世人所建造的城和塔。</div></div>
+          <div class="vrow"><div class="vnum">6</div><div class="vtext">耶和華說：「看哪，他們成為一樣的人民，都是一樣的言語，如今既做起這事來，以後他們所要做的事就沒有不成就的了。</div></div>
+          <div class="vrow"><div class="vnum">7</div><div class="vtext">我們下去，在那裏變亂他們的口音，使他們的言語彼此不通。」</div></div>
+          <div class="vrow"><div class="vnum">8</div><div class="vtext">於是耶和華使他們從那裏分散在全地上；他們就停工，不造那城了。</div></div>
+          <div class="vrow"><div class="vnum">9</div><div class="vtext">因為耶和華在那裏變亂天下人的言語，使眾人分散在全地上，所以那城名叫巴別【就是變亂的意思】。</div></div>
+        </div>
+        <div class="read-hint serif">— 我們一起讀 —</div>
+      </div>
+    </div>
+
+    <!-- 5. 巴別塔解析 -->
+    <div class="swiper-slide slide-babel" data-theme="dark">
+      <div class="slide-inner">
+        <div class="deco-pill serif">PART 1</div>
+        <h2 class="title serif">巴別<br><span style="color:#D4A537;">被自己充滿的人</span></h2>
+        <div class="divider"></div>
+        <p>
+          巴別塔的人其實很有能力 ——
+          會建造、會合作、會組織。
+        </p>
+        <p>
+          但問題<span class="highlight">不在能力，在動機</span>：
+        </p>
+        <p style="font-size:22px;font-weight:700;color:#D4A537;margin:20px 0;line-height:1.6;">
+          「為要傳揚<br>我們的名」
+        </p>
+        <p style="margin-top:24px;">
+          人想高舉自己、取代上帝。<br>
+          結果上帝變亂語言：<br>
+          看似最合一，最後最分裂。
+        </p>
+        <p style="font-size:16px;opacity:0.85;margin-top:20px;font-style:italic;">
+          夫妻同住一個家卻越來越聽不懂彼此；<br>
+          世代之間、教會同工之間 ——<br>
+          很多時候不是真的聽不懂，<br>
+          只是每個人都想證明「我是對的」。
+        </p>
+      </div>
+    </div>
+
+    <!-- 6. 徒 2:1-13 經文 -->
+    <div class="swiper-slide" data-theme="light">
+      <div class="slide-inner">
+        <div class="scripture-head">
+          <div class="ref serif">使徒行傳　2：1 - 13</div>
+          <div class="title-zh serif">五旬節聖靈降臨</div>
+        </div>
+        <div class="verse-list">
+          <div class="vrow"><div class="vnum">1</div><div class="vtext">五旬節那一天，信徒都聚集在一個地方。</div></div>
+          <div class="vrow"><div class="vnum">2</div><div class="vtext">忽然有聲音從天上下來，彷彿一陣大風颳過的聲音，充滿了他們坐著的整個屋子。</div></div>
+          <div class="vrow"><div class="vnum">3</div><div class="vtext">他們又看見形狀像火燄的舌頭，散開，停落在每一個人身上。</div></div>
+          <div class="vrow"><div class="vnum">4</div><div class="vtext">他們都<span class="highlight">被聖靈充滿</span>，照著聖靈所賜的才能開始說起別種語言來。</div></div>
+          <div class="vrow"><div class="vnum">5</div><div class="vtext">那時候，有從世界各國來的虔誠的猶太人住在耶路撒冷。</div></div>
+          <div class="vrow"><div class="vnum">6</div><div class="vtext">一聽見這響聲，一大群人就都聚集在一個地方。大家非常興奮，因為每一個人都聽見信徒用他本地的語言說話。</div></div>
+          <div class="vrow"><div class="vnum">7</div><div class="vtext">在驚訝詫異中，他們說：「你看，這樣說話的人不都是加利利人嗎？</div></div>
+          <div class="vrow"><div class="vnum">8</div><div class="vtext">為甚麼我們個個都聽見他們用我們自己的母語說話呢？</div></div>
+          <div class="vrow"><div class="vnum">9</div><div class="vtext">我們當中有帕提亞人、米底亞人、以攔人；還有從美索不達米亞、猶太、加帕多家、本都、亞細亞、</div></div>
+          <div class="vrow"><div class="vnum">10</div><div class="vtext">弗呂家、旁非利亞、埃及，和靠近古利奈的利比亞一帶地方來的人，也有從羅馬來的，</div></div>
+          <div class="vrow"><div class="vnum">11</div><div class="vtext">包括猶太人和皈依猶太教的外邦人；此外有克里特人和阿拉伯人。我們竟然都聽見他們用我們本地的語言<span class="highlight">述說上帝偉大的作為</span>！」</div></div>
+          <div class="vrow"><div class="vnum">12</div><div class="vtext">他們又驚奇又困惑，彼此你問我，我問你：「這是怎麼回事？」</div></div>
+          <div class="vrow"><div class="vnum">13</div><div class="vtext">有些人竟取笑信徒說：「這些人不過是喝醉罷了！」</div></div>
+        </div>
+        <div class="read-hint serif">— 我們一起讀 —</div>
+      </div>
+    </div>
+
+    <!-- 7. 五旬節解析 -->
+    <div class="swiper-slide slide-pentecost" data-theme="dark">
+      <div class="slide-inner">
+        <div class="deco-pill serif">PART 2</div>
+        <h2 class="title serif">五旬節<br><span style="color:#FFF;">被聖靈充滿的人</span></h2>
+        <div class="divider"></div>
+        <p>
+          門徒聚集，不是為建立自己的王國，<br>
+          也不是為高舉自己的名字 ——<br>
+          而是<span class="highlight">同心禱告、等候聖靈</span>。
+        </p>
+        <p style="margin-top:18px;">
+          聖靈降臨，他們開始說起別國的話：
+        </p>
+        <p style="font-size:19px;font-weight:700;margin:18px 0;line-height:1.7;">
+          巴別塔：語言相同 → 聽不懂<br>
+          五旬節：語言不同 → 彼此相通
+        </p>
+        <p>
+          聖靈的工作，<span class="highlight">就是拆毀人與人之間的牆</span>。
+        </p>
+        <p style="margin-top:20px;font-size:16px;opacity:0.92;font-style:italic;">
+          有位脾氣暴躁的父親，信主後學習禱告，<br>
+          後來竟向家人道歉。<br>
+          孩子說：「你現在比較像我期待的爸爸了。」<br>
+          —— 這就是聖靈的工作。
+        </p>
+      </div>
+    </div>
+
+    <!-- 8. 對照表（高潮頁） -->
+    <div class="swiper-slide" data-theme="light">
+      <div class="slide-inner">
+        <div class="eyebrow serif">兩面鏡子</div>
+        <h2 class="title serif" style="text-align:center;">巴別塔　vs　五旬節</h2>
+        <div class="divider" style="margin:18px auto;"></div>
+        <div class="compare-grid">
+          <div class="compare-col babel">
+            <div class="head serif">巴別塔</div>
+            <div class="item">語言相同<br>→ 聽不懂</div>
+            <div class="item">為傳揚<br>「我們的名」</div>
+            <div class="item">高舉自己</div>
+            <div class="item">人想靠自己<br>通天</div>
+            <div class="item">結果：<br>分散、混亂</div>
+          </div>
+          <div class="compare-col pent">
+            <div class="head serif">五旬節</div>
+            <div class="item">語言不同<br>→ 彼此相通</div>
+            <div class="item">講說<br>「神的大作為」</div>
+            <div class="item">高舉上帝</div>
+            <div class="item">神主動<br>降臨人間</div>
+            <div class="item">結果：<br>合一、福音傳開</div>
+          </div>
+        </div>
+        <p style="text-align:center;margin-top:22px;font-size:17px;line-height:1.7;">
+          真正的合一，<br>
+          <span class="highlight">不是大家都一樣，<br>而是大家都願意高舉神。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- 9. 今天的教會 -->
+    <div class="swiper-slide" data-theme="light">
+      <div class="slide-inner">
+        <div class="eyebrow serif">今天的教會</div>
+        <h2 class="title serif">教會<br>被甚麼充滿？</h2>
+        <div class="divider"></div>
+        <p>
+          很多人以為，聖靈充滿一定要有<br>
+          強烈情緒或特殊現象 ——<br>
+          激動的聚會、特別的經歷⋯⋯
+        </p>
+        <p>
+          但《使徒行傳》強調的是：<br>
+          <span class="highlight">生命開始改變</span>，<br>
+          <span class="highlight">開始傳講神的大作為</span>。
+        </p>
+        <ul class="checklist" style="margin-top:20px;">
+          <li>有沒有活出愛？</li>
+          <li>有沒有人願意傳福音？</li>
+          <li>有沒有人服事人、見證基督？</li>
+        </ul>
+        <p style="margin-top:20px;font-size:17px;color:var(--muted);">
+          人能不能透過教會看見耶穌 —— 這才是關鍵。
+        </p>
+      </div>
+    </div>
+
+    <!-- 10. 互動 B：經文填空 -->
+    <div class="swiper-slide" data-theme="light">
+      <div class="slide-inner">
+        <div class="eyebrow serif" style="text-align:center;">小遊戲 ❶</div>
+        <h2 class="title serif" style="text-align:center;font-size:26px;">經文還記得嗎？</h2>
+        <p style="text-align:center;color:var(--muted);font-size:14px;margin-bottom:20px;">
+          選一個答案，按下去看對不對
+        </p>
+
+        <div class="quiz-card">
+          <div class="quiz-q">
+            <b>Q1.</b> 巴別塔的人說：<br>「我們要建造一座城和一座塔，塔頂通天，為要 <span class="blank">？</span>」
+          </div>
+          <div class="options" data-correct="1">
+            <button class="opt" data-i="0">A. 對抗仇敵</button>
+            <button class="opt" data-i="1">B. 傳揚我們的名</button>
+            <button class="opt" data-i="2">C. 服事萬民</button>
+            <button class="opt" data-i="3">D. 紀念神的大能</button>
+          </div>
+          <div class="feedback" data-explain="✔ 創 11:4 —「為要傳揚我們的名」。一切問題的核心，就在這六個字：人想高舉自己。"></div>
+        </div>
+
+        <div class="quiz-card">
+          <div class="quiz-q">
+            <b>Q2.</b> 五旬節：「他們都被聖靈充滿，照著聖靈所賜的才能開始 <span class="blank">？</span>」
+          </div>
+          <div class="options" data-correct="2">
+            <button class="opt" data-i="0">A. 預言未來的事</button>
+            <button class="opt" data-i="1">B. 行神蹟奇事</button>
+            <button class="opt" data-i="2">C. 說起別種語言來</button>
+            <button class="opt" data-i="3">D. 治病趕鬼</button>
+          </div>
+          <div class="feedback" data-explain="✔ 徒 2:4 —「說起別種語言來」。巴別塔讓人聽不懂，五旬節讓人彼此相通。"></div>
+        </div>
+
+        <div class="quiz-card">
+          <div class="quiz-q">
+            <b>Q3.</b> 五旬節那天，眾人聽見門徒用各國語言講的是 <span class="blank">？</span>
+          </div>
+          <div class="options" data-correct="2">
+            <button class="opt" data-i="0">A. 自己的見證</button>
+            <button class="opt" data-i="1">B. 末日的審判</button>
+            <button class="opt" data-i="2">C. 上帝偉大的作為</button>
+            <button class="opt" data-i="3">D. 摩西的律法</button>
+          </div>
+          <div class="feedback" data-explain="✔ 徒 2:11 —「述說上帝偉大的作為」。真正聖靈充滿的記號：焦點不是自己，是神。"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11. 互動 A：情境配對 -->
+    <div class="swiper-slide" data-theme="light">
+      <div class="slide-inner">
+        <div class="eyebrow serif" style="text-align:center;">小遊戲 ❷</div>
+        <h2 class="title serif" style="text-align:center;font-size:26px;">這像被什麼充滿？</h2>
+        <p style="text-align:center;color:var(--muted);font-size:14px;margin-bottom:20px;">
+          以下情境，是「巴別塔型」還是「五旬節型」？
+        </p>
+
+        <div class="scene-card">
+          <div class="scene-num">1</div>
+          <div class="scene-text">開會時堅持「我的方案才對」，不太聽別人意見。</div>
+          <div class="two-choice options" data-correct="0">
+            <button class="opt babel-style" data-i="0">巴別塔型</button>
+            <button class="opt pent-style" data-i="1">五旬節型</button>
+          </div>
+          <div class="feedback" data-explain="✔ 巴別塔型 —「我是對的」就是高舉自己。看似為主堅持，其實在追求自己的看法。"></div>
+        </div>
+
+        <div class="scene-card">
+          <div class="scene-num">2</div>
+          <div class="scene-text">同工冒犯我，但我選擇先放下、主動道歉。</div>
+          <div class="two-choice options" data-correct="1">
+            <button class="opt babel-style" data-i="0">巴別塔型</button>
+            <button class="opt pent-style" data-i="1">五旬節型</button>
+          </div>
+          <div class="feedback" data-explain="✔ 五旬節型 —聖靈不一定立刻改變個性，卻會慢慢改變人的心。"></div>
+        </div>
+
+        <div class="scene-card">
+          <div class="scene-num">3</div>
+          <div class="scene-text">服事完忍不住想：「有沒有人注意到我做的這件事？」</div>
+          <div class="two-choice options" data-correct="0">
+            <button class="opt babel-style" data-i="0">巴別塔型</button>
+            <button class="opt pent-style" data-i="1">五旬節型</button>
+          </div>
+          <div class="feedback" data-explain="✔ 巴別塔型 —連服事都可能是在追求「自己的名」。這是最隱微、也最常見的陷阱。"></div>
+        </div>
+
+        <div class="scene-card">
+          <div class="scene-num">4</div>
+          <div class="scene-text">看到弟兄軟弱，主動陪伴、為他禱告。</div>
+          <div class="two-choice options" data-correct="1">
+            <button class="opt babel-style" data-i="0">巴別塔型</button>
+            <button class="opt pent-style" data-i="1">五旬節型</button>
+          </div>
+          <div class="feedback" data-explain="✔ 五旬節型 —聖靈拆毀人與人之間的牆。真正的合一從關心人開始。"></div>
+        </div>
+
+        <div class="scene-card">
+          <div class="scene-num">5</div>
+          <div class="scene-text">教會活動很多、聚會很熱鬧，但人心慢慢遠離神。</div>
+          <div class="two-choice options" data-correct="0">
+            <button class="opt babel-style" data-i="0">巴別塔型</button>
+            <button class="opt pent-style" data-i="1">五旬節型</button>
+          </div>
+          <div class="feedback" data-explain="✔ 巴別塔型 —外面看似成功，裡面卻在高舉人的名。熱鬧不等於聖靈的同在。"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 13. 結論金句 -->
+    <div class="swiper-slide" data-theme="light">
+      <div class="slide-inner">
+        <div class="eyebrow serif" style="text-align:center;">結論</div>
+        <div class="quote-card">
+          <div class="quote-mark serif">"</div>
+          <div class="quote-text serif">
+            人被甚麼充滿，<br>
+            最後就會<span class="em">活出</span><br>
+            甚麼樣的生命。
+          </div>
+        </div>
+        <p style="text-align:center;margin-top:26px;font-size:16px;line-height:1.9;color:var(--muted);">
+          巴別塔的人說：<br>
+          <span style="color:var(--ink);font-weight:600;">「為傳揚<span class="highlight">我們的名</span>」</span><br><br>
+          五旬節的人說：<br>
+          <span style="color:var(--ink);font-weight:600;">「述說<span class="highlight">上帝偉大的作為</span>」</span>
+        </p>
+        <p style="text-align:center;font-size:15px;color:var(--muted);margin-top:8px;letter-spacing:1px;">
+          而我們的生命要回應的，<br>
+          是天使的這句宣告 ——
+        </p>
+        <div style="background:linear-gradient(160deg,#1A2A4A 0%,#0F1A33 100%);border-radius:20px;padding:26px 22px;margin-top:14px;color:#FFF8E7;text-align:center;box-shadow:0 10px 28px rgba(26,42,74,0.18);">
+          <div class="serif" style="font-size:20px;line-height:1.8;font-weight:500;">
+            「願榮耀歸於<br>至高之處的上帝！<br>
+            願和平歸給地上<br>祂所喜愛的人！」
+          </div>
+          <div style="font-size:13px;color:#D4A537;margin-top:16px;letter-spacing:3px;">— 路加福音 2:14</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 13. 討論題 -->
+    <div class="swiper-slide" data-theme="light">
+      <div class="slide-inner">
+        <div class="eyebrow serif">小組討論</div>
+        <h2 class="title serif" style="font-size:26px;">輪流分享</h2>
+        <div class="divider"></div>
+        <div class="discussion-list">
+          <div class="d-item">
+            <div class="d-num serif">問題 1</div>
+            <div class="d-text">
+              老實說，這陣子的你 ——<br>
+              <span class="highlight">最容易被什麼充滿？</span><br>
+              （憂慮？比較？面子？感情？工作？）
+            </div>
+          </div>
+          <div class="d-item">
+            <div class="d-num serif">問題 2</div>
+            <div class="d-text">
+              你覺得有什麼<br>
+              <span class="highlight">具體的方法或習慣</span>，<br>
+              可以幫助你被聖靈充滿，而不是被別的充滿？
+            </div>
+          </div>
+        </div>
+        <p style="text-align:center;margin-top:22px;color:var(--muted);font-size:14px;">
+          從 OO 開始，每個人簡短分享一下
+        </p>
+      </div>
+    </div>
+
+    <!-- 14. 行動 + 禱告 -->
+    <div class="swiper-slide" data-theme="light">
+      <div class="slide-inner">
+        <div class="eyebrow serif" style="text-align:center;">這週帶走</div>
+        <div class="action-box">
+          <div class="title serif">一個練習</div>
+          <div class="body">
+            每天睡前花一分鐘，<br>
+            誠實問自己一句話：<br><br>
+            <span style="font-size:22px;font-weight:700;color:var(--accent);">「我今天，<br>是被什麼充滿？」</span>
+          </div>
+        </div>
+        <div class="prayer-box">
+          <div class="title serif">— 一起禱告 —</div>
+          <div class="body">
+            主啊，求祢的聖靈再次充滿我們。<br>
+            把我們裡面那些<br>
+            憂慮、比較、自我、面子⋯⋯<br>
+            一點一點挪去；<br>
+            讓我們的生命，<br>
+            開始高舉祢的名，<br>
+            活出祢的愛。<br><br>
+            <span style="color:#D4A537;">奉主耶穌的名禱告，阿們。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="nav-bar" id="navBar">
+  <button class="nav-btn" id="prevBtn">← 上一頁</button>
+  <button class="nav-btn primary" id="nextBtn">下一頁 →</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  const swiper = new Swiper('.swiper', {
+    speed: 450,
+    keyboard:{enabled:true},
+    mousewheel:false,
+    touchReleaseOnEdges:true,
+  });
+
+  const total = swiper.slides.length;
+  const progressFill = document.getElementById('progressFill');
+  const pageNum = document.getElementById('pageNum');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const navBar = document.getElementById('navBar');
+
+  function updateUI(){
+    const i = swiper.activeIndex;
+    progressFill.style.width = ((i+1)/total*100) + '%';
+    pageNum.textContent = (i+1) + ' / ' + total;
+    prevBtn.disabled = (i===0);
+    nextBtn.disabled = (i===total-1);
+
+    const theme = swiper.slides[i].dataset.theme;
+    if(theme === 'dark'){
+      pageNum.classList.add('dark');
+      navBar.classList.add('dark');
+    }else{
+      pageNum.classList.remove('dark');
+      navBar.classList.remove('dark');
+    }
+  }
+  updateUI();
+  swiper.on('slideChange', updateUI);
+
+  prevBtn.addEventListener('click', ()=>swiper.slidePrev());
+  nextBtn.addEventListener('click', ()=>swiper.slideNext());
+
+  // 互動題邏輯
+  document.querySelectorAll('.options').forEach(group=>{
+    const correct = parseInt(group.dataset.correct);
+    const feedback = group.parentElement.querySelector('.feedback');
+    group.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const chosen = parseInt(btn.dataset.i);
+        if(group.classList.contains('locked')) return;
+        group.classList.add('locked');
+        group.querySelectorAll('.opt').forEach(b=>{
+          const ci = parseInt(b.dataset.i);
+          if(ci === correct){
+            b.classList.add('correct');
+          }else if(ci === chosen){
+            b.classList.add('wrong');
+          }else{
+            b.classList.add('dim');
+          }
+        });
+        if(feedback){
+          feedback.textContent = feedback.dataset.explain;
+          feedback.classList.add('show');
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>
