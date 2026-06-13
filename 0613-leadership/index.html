@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1A2A4A">
+<title>主宰權 就是領導力｜門訓 20260613</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<style>
+  :root{
+    --cream:#FAF7F2;
+    --ink:#1A2A4A;
+    --gold:#B8860B;
+    --gold-light:#D4A537;
+    --accent:#8B2A2A;
+    --muted:#6B6557;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:var(--cream);}
+  body{
+    font-family:"Noto Sans TC","PingFang TC","Heiti TC","Microsoft JhengHei",sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.8;
+  }
+  .serif{font-family:"Noto Serif TC","Songti TC","PingFang TC",serif;}
+
+  .progress-bar{
+    position:fixed;top:0;left:0;height:3px;width:100%;
+    background:rgba(26,42,74,0.08);z-index:100;
+  }
+  .progress-fill{
+    height:100%;background:var(--accent);
+    transition:width .4s ease;width:0%;
+  }
+  .page-num{
+    position:fixed;top:14px;right:16px;z-index:100;
+    font-size:13px;color:var(--muted);
+    background:rgba(250,247,242,0.7);
+    padding:3px 10px;border-radius:999px;
+    backdrop-filter:blur(8px);
+    font-variant-numeric:tabular-nums;
+  }
+  .page-num.dark{color:rgba(255,255,255,0.7);background:rgba(0,0,0,0.25);}
+
+  .swiper{width:100vw;height:100vh;}
+  .swiper-slide{
+    display:flex;align-items:center;justify-content:center;
+    padding:60px 26px 90px;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .slide-inner{width:100%;max-width:560px;margin:auto;}
+
+  .eyebrow{
+    font-size:13px;letter-spacing:5px;
+    color:var(--accent);font-weight:500;
+    margin-bottom:20px;
+  }
+  h2.title{
+    font-size:32px;font-weight:700;line-height:1.5;
+    margin:0 0 22px;letter-spacing:1px;
+  }
+  .divider{
+    height:1px;width:48px;background:var(--accent);
+    margin:20px 0;
+  }
+
+  /* 列表項 */
+  .num-list{
+    display:flex;flex-direction:column;gap:14px;margin-top:6px;
+  }
+  .num-item{
+    background:#FFF;border-radius:14px;padding:18px 20px 18px 60px;
+    position:relative;font-size:19px;line-height:1.7;
+    box-shadow:0 4px 14px rgba(26,42,74,0.06);
+  }
+  .num-item .n{
+    position:absolute;left:16px;top:18px;
+    width:32px;height:32px;border-radius:50%;
+    background:linear-gradient(135deg,var(--gold),var(--gold-light));
+    color:#FFF;display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:15px;
+  }
+
+  /* 「特質」項目（有名稱+說明） */
+  .trait-list{
+    display:flex;flex-direction:column;gap:14px;margin-top:6px;
+  }
+  .trait-item{
+    background:#FFF;border-radius:14px;padding:18px 20px;
+    box-shadow:0 4px 14px rgba(26,42,74,0.06);
+    border-left:4px solid var(--gold);
+  }
+  .trait-item .tname{
+    font-size:20px;font-weight:700;color:var(--ink);
+    margin-bottom:6px;
+  }
+  .trait-item .tdesc{
+    font-size:17px;line-height:1.7;color:var(--ink);
+  }
+  .trait-item.bare{
+    border-left-color:var(--accent);
+  }
+  .trait-item.bare .tdesc{font-size:18px;}
+
+  /* 標題頁 */
+  .cover{
+    background:radial-gradient(circle at 50% 30%,#2C3E66 0%,#0F1A33 70%);
+    color:var(--cream);text-align:center;
+  }
+  .cover .stamp{
+    display:inline-block;border:1px solid rgba(212,165,55,0.7);
+    padding:6px 18px;border-radius:999px;
+    font-size:13px;letter-spacing:6px;color:#D4A537;
+    margin-bottom:30px;
+  }
+  .cover h1{
+    font-size:48px;color:#FFF;line-height:1.25;
+    font-weight:900;margin:0;letter-spacing:2px;
+  }
+  .cover h1 .em{color:#D4A537;}
+  .cover .start-hint{
+    margin-top:48px;font-size:14px;color:rgba(255,255,255,0.5);
+    letter-spacing:3px;animation:fadepulse 2s ease-in-out infinite;
+  }
+  @keyframes fadepulse{0%,100%{opacity:.4;}50%{opacity:1;}}
+
+  /* 結論金句卡 */
+  .quote-card{
+    text-align:center;padding:46px 22px;
+    background:linear-gradient(160deg,#0F1A33,#1A2A4A);
+    border-radius:24px;color:#FFF;
+    box-shadow:0 14px 36px rgba(15,26,51,0.25);
+  }
+  .quote-card .conclusion{
+    font-size:14px;letter-spacing:5px;color:var(--gold-light);
+    margin-bottom:24px;
+  }
+  .quote-card .step{
+    display:block;font-size:32px;font-weight:700;
+    line-height:1.6;letter-spacing:2px;
+  }
+  .quote-card .step .em{color:var(--gold-light);}
+
+  /* 導覽 */
+  .nav-bar{
+    position:fixed;bottom:0;left:0;right:0;z-index:50;
+    display:flex;gap:8px;padding:12px 16px 18px;
+    background:linear-gradient(to top,rgba(250,247,242,0.95),rgba(250,247,242,0.7) 70%,transparent);
+    backdrop-filter:blur(10px);
+  }
+  .nav-bar.dark{
+    background:linear-gradient(to top,rgba(15,26,51,0.92),rgba(15,26,51,0.6) 70%,transparent);
+  }
+  .nav-btn{
+    flex:1;padding:13px;border-radius:14px;border:none;
+    font-family:inherit;font-size:15px;font-weight:600;
+    background:#FFF;color:var(--ink);
+    box-shadow:0 4px 14px rgba(26,42,74,0.1);
+    cursor:pointer;letter-spacing:2px;
+  }
+  .nav-btn.primary{background:var(--ink);color:#FFF;}
+  .nav-btn:disabled{opacity:0.35;cursor:not-allowed;}
+  .nav-btn:active{transform:translateY(1px);}
+
+  @media (max-height:640px){
+    .swiper-slide{padding:48px 22px 80px;}
+    h2.title{font-size:26px;}
+    .num-item,.trait-item .tdesc{font-size:16px;}
+    .cover h1{font-size:36px;}
+    .quote-card .step{font-size:26px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="page-num" id="pageNum">1 / 6</div>
+
+<div class="swiper">
+  <div class="swiper-wrapper">
+
+    <!-- 1. 標題 -->
+    <div class="swiper-slide cover" data-theme="dark">
+      <div class="slide-inner">
+        <div class="stamp">門 訓　20260613</div>
+        <h1 class="serif">
+          主宰權<br>
+          就是<br>
+          <span class="em">領導力</span>
+        </h1>
+        <div class="start-hint">向右滑動開始 →</div>
+      </div>
+    </div>
+
+    <!-- 2. 小組長成功的關鍵因素 -->
+    <div class="swiper-slide" data-theme="light">
+      <div class="slide-inner">
+        <div class="eyebrow serif">壹</div>
+        <h2 class="title serif">小組長成功的<br>關鍵因素</h2>
+        <div class="divider"></div>
+        <div class="num-list">
+          <div class="num-item"><div class="n">1</div>親和力</div>
+          <div class="num-item"><div class="n">2</div>品格</div>
+          <div class="num-item"><div class="n">3</div>學習力</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 要有的特質 -->
+    <div class="swiper-slide" data-theme="light">
+      <div class="slide-inner">
+        <div class="eyebrow serif">貳</div>
+        <h2 class="title serif">另外還有<br>要有的特質</h2>
+        <div class="divider"></div>
+        <div class="trait-list">
+          <div class="trait-item">
+            <div class="tname">領導力</div>
+            <div class="tdesc">給人帶來影響力，賦予周遭的人動機</div>
+          </div>
+          <div class="trait-item">
+            <div class="tname">自信心</div>
+            <div class="tdesc">讓周圍的人有安全感 有把握甚至有犯錯的空間</div>
+          </div>
+          <div class="trait-item bare">
+            <div class="tdesc">信心指的是信仰的信心 能幫助你有信心</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 21世紀領袖座右銘 -->
+    <div class="swiper-slide" data-theme="light">
+      <div class="slide-inner">
+        <div class="eyebrow serif">參</div>
+        <h2 class="title serif">21 世紀領袖<br>座右銘</h2>
+        <div class="divider"></div>
+        <div class="num-list">
+          <div class="num-item"><div class="n">1</div>思想普世 行動地區</div>
+          <div class="num-item"><div class="n">2</div>要有普適性的夢想</div>
+          <div class="num-item"><div class="n">3</div>最地區性的 也可成為最普世性的</div>
+          <div class="num-item"><div class="n">4</div>地區性領導力兼顧全球性的領導力 世界的眼光跟生活的眼光結合</div>
+          <div class="num-item"><div class="n">5</div>管理自己才能管理別人</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. 要開發領導力有三點 -->
+    <div class="swiper-slide" data-theme="light">
+      <div class="slide-inner">
+        <div class="eyebrow serif">肆</div>
+        <h2 class="title serif">要開發領導力<br>有三點</h2>
+        <div class="divider"></div>
+        <div class="num-list">
+          <div class="num-item"><div class="n">1</div>思想改變 價值觀就會改變</div>
+          <div class="num-item"><div class="n">2</div>態度改變 信心的行動就會改變</div>
+          <div class="num-item"><div class="n">3</div>行動改變 是因為照著所信的去做</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. 結論 -->
+    <div class="swiper-slide" data-theme="dark">
+      <div class="slide-inner">
+        <div class="quote-card">
+          <div class="conclusion serif">結　論</div>
+          <span class="step serif">正確<span class="em">知道</span></span>
+          <span class="step serif">正確<span class="em">相信</span></span>
+          <span class="step serif">正確<span class="em">行動</span></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="nav-bar" id="navBar">
+  <button class="nav-btn" id="prevBtn">← 上一頁</button>
+  <button class="nav-btn primary" id="nextBtn">下一頁 →</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  const swiper = new Swiper('.swiper', {
+    speed: 450,
+    keyboard:{enabled:true},
+    mousewheel:false,
+    touchReleaseOnEdges:true,
+  });
+
+  const total = swiper.slides.length;
+  const progressFill = document.getElementById('progressFill');
+  const pageNum = document.getElementById('pageNum');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const navBar = document.getElementById('navBar');
+
+  function updateUI(){
+    const i = swiper.activeIndex;
+    progressFill.style.width = ((i+1)/total*100) + '%';
+    pageNum.textContent = (i+1) + ' / ' + total;
+    prevBtn.disabled = (i===0);
+    nextBtn.disabled = (i===total-1);
+
+    const theme = swiper.slides[i].dataset.theme;
+    if(theme === 'dark'){
+      pageNum.classList.add('dark');
+      navBar.classList.add('dark');
+    }else{
+      pageNum.classList.remove('dark');
+      navBar.classList.remove('dark');
+    }
+  }
+  updateUI();
+  swiper.on('slideChange', updateUI);
+
+  prevBtn.addEventListener('click', ()=>swiper.slidePrev());
+  nextBtn.addEventListener('click', ()=>swiper.slideNext());
+</script>
+</body>
+</html>
